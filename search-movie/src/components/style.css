@@ -1,0 +1,9 @@
+.body {
+  background-image: url("https://images4.alphacoders.com/875/875097.jpg");
+  /* filter: blur(px); */
+  height: 100vh;
+  width: 100%;
+}
+.bg {
+  margin-top: 15%;
+}
