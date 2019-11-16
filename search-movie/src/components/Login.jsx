@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
 import Protected from "./Protected";
-import ExampleComponent from "./captcha";
 import "./style.css";
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
