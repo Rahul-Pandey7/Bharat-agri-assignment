@@ -4,7 +4,6 @@ import Login from "./Login";
 import Home from "./Home";
 import Protected from "./Protected";
 import EachMovieDetails from "./EachMovieDetails";
-import { loadReCaptcha } from "react-recaptcha-google";
 const ProtectedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -19,9 +18,6 @@ const ProtectedRoute = ({ component: Component, ...rest }) => (
 );
 
 export default class App extends React.Component {
-  componentDidMount() {
-    loadReCaptcha();
-  }
   render() {
     return (
       <div>

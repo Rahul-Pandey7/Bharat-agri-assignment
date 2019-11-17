@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "axios";
-import queryString from "query-string";
-
+import { Link } from "react-router-dom";
 export default class EachMovieDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +9,11 @@ export default class EachMovieDetails extends React.Component {
       name: "",
       director: "",
       plot: "",
-      actors: ""
+      actors: "",
+      poster: "",
+      rating: "",
+      genre: "",
+      writer: ""
     };
   }
 
@@ -26,7 +29,11 @@ export default class EachMovieDetails extends React.Component {
           name: response.data.Title,
           plot: response.data.Plot,
           director: response.data.Director,
-          actors: response.data.Actors
+          actors: response.data.Actors,
+          poster: response.data.Poster,
+          rating: response.data.imdbRating,
+          genre: response.data.Genre,
+          writer: response.data.Writer
         });
       })
       .catch(err => alert(err));
@@ -35,32 +42,60 @@ export default class EachMovieDetails extends React.Component {
     return (
       <React.Fragment>
         <div className="mt-5"></div>
-        <div className="container mt-5">
-          <div className="card shadow-lg" style={{ height: "27rem" }}>
-            <center className="mt-5">
-              <h3 className="card-title">
-                <b>Title:</b>
-                {this.state.name}
-              </h3>
-              <br />
-              <p>
-                <b>Plot:</b>
-                {this.state.plot}
-              </p>
-              <br />
-              <p>
-                <b>Director:</b>
-                {this.state.director}
-              </p>
-              <br />
-              <p>
-                <b>Starring:</b>
-                {this.state.actors}
-              </p>
-              <br />
-            </center>
+        <div className="container w-75 mt-5">
+          <div className="card shadow-lg" style={{ height: "25rem" }}>
+            <div className="row">
+              <div
+                className="col-lg-4 col-md-12 col-sm-12"
+                style={{ transform: "rotate(3deg)" }}
+              >
+                <img
+                  alt="poster"
+                  src={this.state.poster}
+                  className="w-75"
+                  // style={{
+                  //   filter: "blur(5px)"
+                  // }}
+                ></img>
+              </div>
+              <div className="col-lg-8 col-md-12 col-sm-12">
+                <h1 className="card-title">{this.state.name}</h1>
+                <img src="https://img.icons8.com/ios-glyphs/30/000000/star.png" />
+                <span>
+                  {this.state.rating} &nbsp; &nbsp; || &nbsp; &nbsp; &nbsp;{" "}
+                  {this.state.genre}
+                </span>
+                <p>{this.state.plot}</p>
+                <p>
+                  <b>
+                    <img src="https://img.icons8.com/material-two-tone/14/000000/writer-female.png" />
+                    &nbsp;&nbsp; &nbsp; Written By: &nbsp;
+                  </b>{" "}
+                  &nbsp; &nbsp;
+                  {this.state.writer}
+                </p>
+                <p>
+                  <b>
+                    {" "}
+                    <img src="https://img.icons8.com/pastel-glyph/18/000000/school-director-1--v1.png" />
+                    &nbsp; &nbsp; Directed By: &nbsp;
+                  </b>
+                  {this.state.director}
+                </p>
+                <p>
+                  <b>
+                    <img src="https://img.icons8.com/color/35/000000/recent-celebrity.png" />
+                    Starring: &nbsp;
+                  </b>
+                  {this.state.actors}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
+        <Link to="/home">
+          <a style={{ border: "2px solid black" }}>Back to Home</a>
+        </Link>
       </React.Fragment>
     );
   }

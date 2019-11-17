@@ -47,33 +47,31 @@ export default class Login extends React.Component {
   };
   render() {
     return (
-      <div className="body">
-        <div className="text-center text-light">
-          <h1 className="offset-1">Please Login to Continue</h1>
-        </div>
-        <div
-          className="bg jumbotron w-25 offset-5 container"
-          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-        >
+      <div>
+        <div className="style fade-in">
           <form>
             <center>
-              <div className="form-group ">
+              <div class="form-group">
                 <input
                   type="text"
+                  class="form-control w-25 text-light text-center"
                   name="userName"
                   value={this.state.userName}
                   onChange={this.handleInput}
-                  className="form-control w-50"
                   placeholder="Enter Username"
+                  style={{
+                    backgroundColor: "rgba(0,0,0,0.5)",
+                    border: "2px solid red"
+                  }}
                 />
+                <button
+                  type="button"
+                  onClick={this.login}
+                  class="btn btn-outline-danger mt-3"
+                >
+                  Login
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={this.login}
-                class="btn btn-primary"
-              >
-                Login
-              </button>
             </center>
           </form>
         </div>

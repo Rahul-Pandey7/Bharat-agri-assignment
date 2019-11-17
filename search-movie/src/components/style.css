@@ -1,9 +1,58 @@
-.body {
-  background-image: url("https://images4.alphacoders.com/875/875097.jpg");
-  /* filter: blur(px); */
-  height: 100vh;
-  width: 100%;
+.fade-in {
+  animation: fadeIn ease 5s;
+  -webkit-animation: fadeIn ease 5s;
+  -moz-animation: fadeIn ease 5s;
+  -o-animation: fadeIn ease 5s;
+  -ms-animation: fadeIn ease 5s;
 }
-.bg {
-  margin-top: 15%;
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-ms-keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.style {
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  padding-top: calc(50vh - 50px);
+  background-size: cover;
+  background-image: url(https://media1.giphy.com/media/MUlmRFnTQxwJ2/giphy.gif?cid=dc79c3575a85ef416e586a4e2ec01215);
+}
+.card-img {
+  height: 600px;
 }

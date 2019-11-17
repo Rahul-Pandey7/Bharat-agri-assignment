@@ -3,9 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Protected from "./Protected";
 import queryString from "query-string";
-
-let name = JSON.parse(localStorage.getItem("name"));
-
+import "./style.css";
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -13,8 +11,9 @@ export default class Home extends React.Component {
     this.state = {
       arr: [],
       searchHistory: [],
+      welcomeName: "",
       result: {
-        search: "",
+        s: "",
         page: 1
       }
     };
@@ -22,11 +21,12 @@ export default class Home extends React.Component {
 
   //search Bar
   handleSearch = e => {
+    console.log(e.target.value);
+    let search = this.state.result;
+    search.s = e.target.value;
     this.setState({
-      [e.target.name]: e.target.value
+      result: search
     });
-    // let history = JSON.parse(localStorage.getItem(`${name.name}`));
-    // console.log(history);
   };
 
   logout = () => {
@@ -34,10 +34,6 @@ export default class Home extends React.Component {
       this.props.history.push("/");
     });
     localStorage.removeItem("name", JSON.stringify());
-    localStorage.setItem(
-      `${name.name}`,
-      JSON.stringify(this.state.searchHistory)
-    );
   };
 
   //geting API
@@ -45,37 +41,44 @@ export default class Home extends React.Component {
     this.setState({
       result: values
     });
+    var parsed = queryString.parse(values);
+    parsed.apikey = "3e2e5fed";
     axios({
       method: "GET",
-      url: `http://www.omdbapi.com/?apikey=3e2e5fed&${queryString.stringify(
-        values
-      )}`
-
-      //   page: values.page
+      url: `http://www.omdbapi.com/?${queryString.stringify(parsed)}`
     }).then(response => {
       console.log(response.data);
-      // this.setState({
-      //     items: response.data
-      // })
+      if (response.data.Search !== undefined) {
+        this.setState({
+          arr: [...response.data.Search]
+        });
+      }
     });
   };
 
-  componentDidMount() {
+  componentDidMount = () => {
     let values = queryString.parse(this.props.location.search);
     console.log(values);
     let obj = {
       page: values.page,
-      search: values.search
+      s: values.s
     };
     if (obj.page === undefined) {
       obj.page = 1;
     }
     console.log(obj.page);
     this.get_api(obj);
-  }
+    let name = JSON.parse(localStorage.getItem("name"));
+    this.setState({
+      welcomeName: name.name
+    });
+  };
+
+  dataListItems = () => {};
 
   //changing page
   change_page = e => {
+    console.log(e.target.textContent);
     let new_result = this.state.result;
     if (e.target.textContent === "Next" || e.target.textContent === "Prev") {
       if (e.target.textContent === "Next") {
@@ -89,19 +92,20 @@ export default class Home extends React.Component {
             this.props.history.push(`?${queryString.stringify(new_result)}`);
           }
         );
-        this.get_api(new_result);
+        console.log(new_result);
+        this.get_api(queryString.stringify(new_result));
       } else {
         console.log(e.target.textContent);
-        new_result.page = Number(this.state.filter.page) - 1;
+        new_result.page = Number(this.state.result.page) - 1;
         this.setState(
           {
-            filter: new_result
+            result: new_result
           },
           () => {
             this.props.history.push(`?${queryString.stringify(new_result)}`);
           }
         );
-        this.get_api(new_result);
+        this.get_api(queryString.stringify(new_result));
       }
     } else {
       console.log(e.target.textContent);
@@ -114,38 +118,17 @@ export default class Home extends React.Component {
           this.props.history.push(`?${queryString.stringify(new_result)}`);
         }
       );
-      this.get_api(new_result);
+      this.get_api(queryString.stringify(new_result));
     }
   };
-
-  //searching Movie
-  //   search = () => {
-  //     axios({
-  //       method: "get",
-  //       url: `http://www.omdbapi.com/?s=${this.state.search}`,
-  //       params: {
-  //         apikey: "3e2e5fed"
-  //       }
-  //     })
-  //       .then(response => {
-  //         console.log(response.data);
-  //         this.setState({
-  //           arr: [...response.data.Search]
-  //         });
-  //       })
-  //       .catch(err => alert("No such Movie found"));
-  //     if (this.state.arr) {
-  //       this.state.searchHistory.push(this.state.search);
-  //     }
-  //   };
 
   //searching_new
   search = () => {
     let Search = this.state.result;
     console.log(this.state.result);
-    Search.search = this.state.result.search;
+    Search.s = this.state.result.s;
     Search.page = 1;
-    if (this.state.result.search !== " ") {
+    if (this.state.result.s !== undefined) {
       this.get_api(queryString.stringify(Search));
       console.log(Search);
       this.setState(
@@ -156,14 +139,51 @@ export default class Home extends React.Component {
           this.props.history.push(`?${queryString.stringify(Search)}`);
         }
       );
+    } else {
+      alert("Please enter Movie Name");
     }
+
+    // var dataList = JSON.parse(localStorage.getItem(this.state.welcomeName));
+    // console.log(dataList);
+    // if (dataList == null) {
+    //   if (this.state.result.s !== " ") {
+    //     dataList.push(this.state.result.s);
+    //     localStorage.setItem(this.state.welcomeName, JSON.stringify(dataList));
+    //   }
+    // } else {
+    //   if (this.state.result.s !== " ") {
+    //     if (dataList.includes(this.state.result.s) === false) {
+    //       dataList.push(this.state.result.s);
+    //       localStorage.setItem(
+    //         this.state.welcomeName,
+    //         JSON.stringify(dataList)
+    //       );
+    //     } else {
+    //       localStorage.setItem(
+    //         this.state.welcomeName,
+    //         JSON.stringify(dataList)
+    //       );
+    //     }
+    //   }
+    // }
   };
 
   render() {
+    var data = JSON.parse(localStorage.getItem(this.state.welcomeName));
+    if (data !== null) {
+      var optionsList = data.map((items, index) => {
+        return <option key={index} value={items}></option>;
+      });
+    }
+
+    console.log(this.state.result);
+    console.log(this.state.searchHistory);
     return (
       <div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-light">
-          <h3 class="navbar-brand text-success">Welcome {name.name}!</h3>
+          <h3 class="navbar-brand text-success">
+            Welcome {this.state.welcomeName}!
+          </h3>
           <button
             class="navbar-toggler"
             type="button"
@@ -191,15 +211,16 @@ export default class Home extends React.Component {
         <center>
           <div className="container mt-5">
             <input
-              type="text"
               name="search"
+              type="text"
               list="data"
+              id="search"
               value={this.state.searchBox}
               onChange={this.handleSearch}
               className="form-control w-50"
               placeholder="Search Movies..."
             />
-            <datalist id="data" />
+            <datalist id="data">{optionsList}</datalist>
 
             <button
               type="button"
@@ -216,83 +237,152 @@ export default class Home extends React.Component {
             {this.state.arr.map(items => {
               return (
                 <React.Fragment>
-                  <div className="col-lg-4">
-                    <div class="card">
-                      <div class="card-body">
-                        <h5 class="card-title">{items.Title}</h5>
-                        <img src={items.Poster} alt="poster" />
-                        <Link to={`/details/${items.Title}`}>
-                          <button>See Info</button>
-                        </Link>
-                      </div>
+                  <div className="card col-lg-4 col-md-12 col-sm-12">
+                    {/* <div className="col-4"> */}
+                    <img
+                      src={items.Poster}
+                      className=" card-img-top card-img"
+                      alt="picture"
+                    ></img>
+                    <div className="card-body bg-dark">
+                      <h6 className=" card-title text-center text-warning">
+                        {items.Title}
+                      </h6>
+                      <p className="card-text text-center text-warning">
+                        {items.Rating}
+                      </p>
+                      <Link to={`/details/${items.Title}`}>
+                        <button className="btn btn-outline-warning offset-4 mt-2">
+                          More Info
+                        </button>
+                      </Link>
                     </div>
                   </div>
-
-                  {/*pagiantion */}
-                  {this.state.result.search !== undefined ? (
-                    <div className="container text-center">
-                      <nav aria-label="Page navigation example">
-                        <ul className="pagination">
-                          <li
-                            className="page-item page-link"
-                            onClick={this.change_page}
-                            name={Number(this.state.result.page) - 1}
-                          >
-                            Prev
-                          </li>
-                          <li
-                            className="page-item page-link"
-                            onClick={this.change_page}
-                            name={Number(this.state.result.page)}
-                          >
-                            {Number(this.state.result.page)}
-                          </li>
-                          <li
-                            className="page-item page-link"
-                            onClick={this.change_page}
-                            name={Number(this.state.result.page) + 1}
-                          >
-                            {Number(this.state.result.page) + 1}
-                          </li>
-                          <li
-                            className="page-item page-link"
-                            onClick={this.change_page}
-                            name={Number(this.state.result.page) + 2}
-                          >
-                            {Number(this.state.result.page) + 2}
-                          </li>
-                          <li
-                            className="page-item page-link"
-                            onClick={this.change_page}
-                            name={Number(this.state.result.page) + 3}
-                          >
-                            {Number(this.state.result.page) + 3}
-                          </li>
-                          <li
-                            className="page-item page-link"
-                            onClick={this.change_page}
-                            name={Number(this.state.result.page) + 4}
-                          >
-                            {Number(this.state.result.page) + 4}
-                          </li>
-                          <li
-                            className="page-item page-link"
-                            onClick={this.change_page}
-                            name={Number(this.state.result.page) + 1}
-                          >
-                            Next
-                          </li>
-                        </ul>
-                      </nav>
-                    </div>
-                  ) : (
-                    <></>
-                  )}
                 </React.Fragment>
               );
             })}
           </div>
+          {this.state.result.s !== undefined ? (
+            <div className="container text-center">
+              <nav aria-label="Page navigation example">
+                <ul className="pagination offset-2 mt-2">
+                  <li
+                    className="page-item page-link"
+                    onClick={this.change_page}
+                    name={Number(this.state.result.page) - 1}
+                  >
+                    Prev
+                  </li>
+                  <li
+                    className="page-item page-link"
+                    onClick={this.change_page}
+                    name={Number(this.state.result.page)}
+                  >
+                    {Number(this.state.result.page)}
+                  </li>
+                  <li
+                    className="page-item page-link"
+                    onClick={this.change_page}
+                    name={Number(this.state.result.page) + 1}
+                  >
+                    {Number(this.state.result.page) + 1}
+                  </li>
+                  <li
+                    className="page-item page-link"
+                    onClick={this.change_page}
+                    name={Number(this.state.result.page) + 2}
+                  >
+                    {Number(this.state.result.page) + 2}
+                  </li>
+                  <li
+                    className="page-item page-link"
+                    onClick={this.change_page}
+                    name={Number(this.state.result.page) + 3}
+                  >
+                    {Number(this.state.result.page) + 3}
+                  </li>
+                  <li
+                    className="page-item page-link"
+                    onClick={this.change_page}
+                    name={Number(this.state.result.page) + 4}
+                  >
+                    {Number(this.state.result.page) + 4}
+                  </li>
+                  <li
+                    className="page-item page-link"
+                    onClick={this.change_page}
+                    name={Number(this.state.result.page) + 1}
+                  >
+                    Next
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          ) : (
+            <h1>Invisible</h1>
+          )}
         </div>
+
+        {/*pagiantion */}
+        {/* {this.state.result.s !== undefined ? (
+          <div className="container text-center">
+            <nav aria-label="Page navigation example">
+              <ul className="pagination">
+                <li
+                  className="page-item page-link"
+                  onClick={this.change_page}
+                  name={Number(this.state.result.page) - 1}
+                >
+                  Prev
+                </li>
+                <li
+                  className="page-item page-link"
+                  onClick={this.change_page}
+                  name={Number(this.state.result.page)}
+                >
+                  {Number(this.state.result.page)}
+                </li>
+                <li
+                  className="page-item page-link"
+                  onClick={this.change_page}
+                  name={Number(this.state.result.page) + 1}
+                >
+                  {Number(this.state.result.page) + 1}
+                </li>
+                <li
+                  className="page-item page-link"
+                  onClick={this.change_page}
+                  name={Number(this.state.result.page) + 2}
+                >
+                  {Number(this.state.result.page) + 2}
+                </li>
+                <li
+                  className="page-item page-link"
+                  onClick={this.change_page}
+                  name={Number(this.state.result.page) + 3}
+                >
+                  {Number(this.state.result.page) + 3}
+                </li>
+                <li
+                  className="page-item page-link"
+                  onClick={this.change_page}
+                  name={Number(this.state.result.page) + 4}
+                >
+                  {Number(this.state.result.page) + 4}
+                </li>
+                <li
+                  className="page-item page-link"
+                  onClick={this.change_page}
+                  name={Number(this.state.result.page) + 1}
+                >
+                  Next
+                </li>
+              </ul>
+            </nav>
+          </div>
+        ) : (
+          <h1>Invisible</h1>
+        )} */}
       </div>
     );
   }
