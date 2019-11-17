@@ -1,11 +1,15 @@
 class Protected {
   constructor() {
-    this.userAuthenticate = false;
+    this.userAuthenticate = "";
   }
 
   login(callback) {
-    this.userAuthenticate = true;
-    callback();
+    if (localStorage.getItem("name") !== undefined) {
+      this.userAuthenticate = true;
+      callback();
+    } else {
+      this.userAuthenticate = false;
+    }
   }
 
   logout(callback) {

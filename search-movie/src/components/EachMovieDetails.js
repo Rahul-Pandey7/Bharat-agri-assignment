@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
 export default class EachMovieDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -60,7 +59,10 @@ export default class EachMovieDetails extends React.Component {
               </div>
               <div className="col-lg-8 col-md-12 col-sm-12">
                 <h1 className="card-title">{this.state.name}</h1>
-                <img src="https://img.icons8.com/ios-glyphs/30/000000/star.png" />
+                <img
+                  src="https://img.icons8.com/ios-glyphs/30/000000/star.png"
+                  alt="rating"
+                />
                 <span>
                   {this.state.rating} &nbsp; &nbsp; || &nbsp; &nbsp; &nbsp;{" "}
                   {this.state.genre}
@@ -68,7 +70,10 @@ export default class EachMovieDetails extends React.Component {
                 <p>{this.state.plot}</p>
                 <p>
                   <b>
-                    <img src="https://img.icons8.com/material-two-tone/14/000000/writer-female.png" />
+                    <img
+                      src="https://img.icons8.com/material-two-tone/14/000000/writer-female.png"
+                      alt="writer"
+                    />
                     &nbsp;&nbsp; &nbsp; Written By: &nbsp;
                   </b>{" "}
                   &nbsp; &nbsp;
@@ -77,14 +82,20 @@ export default class EachMovieDetails extends React.Component {
                 <p>
                   <b>
                     {" "}
-                    <img src="https://img.icons8.com/pastel-glyph/18/000000/school-director-1--v1.png" />
+                    <img
+                      src="https://img.icons8.com/pastel-glyph/18/000000/school-director-1--v1.png"
+                      alt="director"
+                    />
                     &nbsp; &nbsp; Directed By: &nbsp;
                   </b>
                   {this.state.director}
                 </p>
                 <p>
                   <b>
-                    <img src="https://img.icons8.com/color/35/000000/recent-celebrity.png" />
+                    <img
+                      src="https://img.icons8.com/color/35/000000/recent-celebrity.png"
+                      alt="actors"
+                    />
                     Starring: &nbsp;
                   </b>
                   {this.state.actors}
@@ -93,9 +104,6 @@ export default class EachMovieDetails extends React.Component {
             </div>
           </div>
         </div>
-        <Link to="/home">
-          <a style={{ border: "2px solid black" }}>Back to Home</a>
-        </Link>
       </React.Fragment>
     );
   }

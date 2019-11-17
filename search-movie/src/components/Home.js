@@ -10,7 +10,7 @@ export default class Home extends React.Component {
 
     this.state = {
       arr: [],
-      searchHistory: [],
+      searchBox: "",
       welcomeName: "",
       result: {
         s: "",
@@ -21,11 +21,8 @@ export default class Home extends React.Component {
 
   //search Bar
   handleSearch = e => {
-    console.log(e.target.value);
-    let search = this.state.result;
-    search.s = e.target.value;
     this.setState({
-      result: search
+      searchBox: e.target.value
     });
   };
 
@@ -36,7 +33,7 @@ export default class Home extends React.Component {
     localStorage.removeItem("name", JSON.stringify());
   };
 
-  //geting API
+  // geting API
   get_api = values => {
     this.setState({
       result: values
@@ -67,7 +64,7 @@ export default class Home extends React.Component {
       obj.page = 1;
     }
     console.log(obj.page);
-    this.get_api(obj);
+    if (values.s !== undefined) this.get_api(queryString.stringify(obj));
     let name = JSON.parse(localStorage.getItem("name"));
     this.setState({
       welcomeName: name.name
@@ -76,7 +73,7 @@ export default class Home extends React.Component {
 
   dataListItems = () => {};
 
-  //changing page
+  // //changing page
   change_page = e => {
     console.log(e.target.textContent);
     let new_result = this.state.result;
@@ -125,8 +122,10 @@ export default class Home extends React.Component {
   //searching_new
   search = () => {
     let Search = this.state.result;
+
     console.log(this.state.result);
-    Search.s = this.state.result.s;
+
+    Search.s = this.state.searchBox;
     Search.page = 1;
     if (this.state.result.s !== undefined) {
       this.get_api(queryString.stringify(Search));
@@ -177,7 +176,7 @@ export default class Home extends React.Component {
     }
 
     console.log(this.state.result);
-    console.log(this.state.searchHistory);
+    console.log(this.state.arr.length);
     return (
       <div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-light">
@@ -237,12 +236,12 @@ export default class Home extends React.Component {
             {this.state.arr.map(items => {
               return (
                 <React.Fragment>
-                  <div className="card col-lg-4 col-md-12 col-sm-12">
+                  <div className="card col-lg-4 col-md-6 col-sm-12">
                     {/* <div className="col-4"> */}
                     <img
                       src={items.Poster}
                       className=" card-img-top card-img"
-                      alt="picture"
+                      alt="poster"
                     ></img>
                     <div className="card-body bg-dark">
                       <h6 className=" card-title text-center text-warning">
@@ -262,7 +261,7 @@ export default class Home extends React.Component {
               );
             })}
           </div>
-          {this.state.result.s !== undefined ? (
+          {this.state.arr.length !== 0 ? (
             <div className="container text-center">
               <nav aria-label="Page navigation example">
                 <ul className="pagination offset-2 mt-2">
@@ -319,7 +318,7 @@ export default class Home extends React.Component {
               </nav>
             </div>
           ) : (
-            <h1>Invisible</h1>
+            <></>
           )}
         </div>
 
