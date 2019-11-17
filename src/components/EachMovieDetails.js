@@ -22,7 +22,7 @@ export default class EachMovieDetails extends React.Component {
       url: `http://www.omdbapi.com/?apikey=3e2e5fed&t=${this.props.match.params.name}`
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
 
         this.setState({
           name: response.data.Title,
@@ -52,9 +52,6 @@ export default class EachMovieDetails extends React.Component {
                   alt="poster"
                   src={this.state.poster}
                   className="w-75"
-                  // style={{
-                  //   filter: "blur(5px)"
-                  // }}
                 ></img>
               </div>
               <div className="col-lg-8 col-md-12 col-sm-12">
@@ -75,7 +72,7 @@ export default class EachMovieDetails extends React.Component {
                       alt="writer"
                     />
                     &nbsp;&nbsp; &nbsp; Written By: &nbsp;
-                  </b>{" "}
+                  </b>
                   &nbsp; &nbsp;
                   {this.state.writer}
                 </p>

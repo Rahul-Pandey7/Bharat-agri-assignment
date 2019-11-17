@@ -35,16 +35,13 @@ export default class Home extends React.Component {
 
   // geting API
   get_api = values => {
-    this.setState({
-      result: values
-    });
     var parsed = queryString.parse(values);
     parsed.apikey = "3e2e5fed";
     axios({
       method: "GET",
       url: `http://www.omdbapi.com/?${queryString.stringify(parsed)}`
     }).then(response => {
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.Search !== undefined) {
         this.setState({
           arr: [...response.data.Search]
@@ -55,7 +52,7 @@ export default class Home extends React.Component {
 
   componentDidMount = () => {
     let values = queryString.parse(this.props.location.search);
-    console.log(values);
+    // console.log(values);
     let obj = {
       page: values.page,
       s: values.s
@@ -76,12 +73,12 @@ export default class Home extends React.Component {
 
   // //changing page
   change_page = e => {
-    console.log(e.target.textContent);
+    // console.log(e.target.textContent);
     let new_result = this.state.result;
     if (e.target.textContent === "Next" || e.target.textContent === "Prev") {
       if (e.target.textContent === "Next") {
         new_result.page = Number(this.state.result.page) + 1;
-        console.log(e.target.textContent);
+        // console.log(e.target.textContent);
         this.setState(
           {
             result: new_result
@@ -90,10 +87,10 @@ export default class Home extends React.Component {
             this.props.history.push(`?${queryString.stringify(new_result)}`);
           }
         );
-        console.log(new_result);
+        // console.log(new_result);
         this.get_api(queryString.stringify(new_result));
       } else {
-        console.log(e.target.textContent);
+        // console.log(e.target.textContent);
         new_result.page = Number(this.state.result.page) - 1;
         this.setState(
           {
@@ -106,7 +103,7 @@ export default class Home extends React.Component {
         this.get_api(queryString.stringify(new_result));
       }
     } else {
-      console.log(e.target.textContent);
+      // console.log(e.target.textContent);
       new_result.page = e.target.textContent;
       this.setState(
         {
@@ -123,14 +120,11 @@ export default class Home extends React.Component {
   //searching_new
   search = () => {
     let Search = this.state.result;
-
-    console.log(this.state.result);
-
     Search.s = this.state.searchBox;
     Search.page = 1;
     if (this.state.result.s !== "") {
       this.get_api(queryString.stringify(Search));
-      console.log(Search);
+      // console.log(Search);
       this.setState(
         {
           result: Search
@@ -142,11 +136,11 @@ export default class Home extends React.Component {
     } else {
       alert("Please enter Movie Name");
     }
-
-    // var dataList = JSON.parse(localStorage.getItem(this.state.welcomeName));
+    // var dataList = [];
+    // dataList = JSON.parse(localStorage.getItem(this.state.welcomeName));
     // console.log(dataList);
     // if (dataList == null) {
-    //   if (this.state.result.s !== " ") {
+    //   if (this.state.result.s !== "") {
     //     dataList.push(this.state.result.s);
     //     localStorage.setItem(this.state.welcomeName, JSON.stringify(dataList));
     //   }
@@ -176,8 +170,8 @@ export default class Home extends React.Component {
       });
     }
 
-    console.log(this.state.result);
-    console.log(this.state.arr.length);
+    // console.log(this.state.result);
+    // console.log(this.state.arr.length);
     return (
       <div>
         <nav class="navbar navbar-expand-lg navbar-dark bg-light">
@@ -267,49 +261,42 @@ export default class Home extends React.Component {
                   <li
                     className="page-item page-link"
                     onClick={this.change_page}
-                    name={Number(this.state.result.page) - 1}
                   >
                     Prev
                   </li>
                   <li
                     className="page-item page-link"
                     onClick={this.change_page}
-                    name={Number(this.state.result.page)}
                   >
                     {Number(this.state.result.page)}
                   </li>
                   <li
                     className="page-item page-link"
                     onClick={this.change_page}
-                    name={Number(this.state.result.page) + 1}
                   >
                     {Number(this.state.result.page) + 1}
                   </li>
                   <li
                     className="page-item page-link"
                     onClick={this.change_page}
-                    name={Number(this.state.result.page) + 2}
                   >
                     {Number(this.state.result.page) + 2}
                   </li>
                   <li
                     className="page-item page-link"
                     onClick={this.change_page}
-                    name={Number(this.state.result.page) + 3}
                   >
                     {Number(this.state.result.page) + 3}
                   </li>
                   <li
                     className="page-item page-link"
                     onClick={this.change_page}
-                    name={Number(this.state.result.page) + 4}
                   >
                     {Number(this.state.result.page) + 4}
                   </li>
                   <li
                     className="page-item page-link"
                     onClick={this.change_page}
-                    name={Number(this.state.result.page) + 1}
                   >
                     Next
                   </li>

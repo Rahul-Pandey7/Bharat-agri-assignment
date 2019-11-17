@@ -24,7 +24,7 @@ export default class Login extends React.Component {
       url: `https://jsonplaceholder.typicode.com/users`
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         this.setState({
           arr: [...response.data]
         });
