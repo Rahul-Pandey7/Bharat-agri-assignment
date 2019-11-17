@@ -51,8 +51,14 @@
   text-align: center;
   padding-top: calc(50vh - 50px);
   background-size: cover;
-  background-image: url(https://media1.giphy.com/media/MUlmRFnTQxwJ2/giphy.gif?cid=dc79c3575a85ef416e586a4e2ec01215);
+  background-image: url(https://steamuserimages-a.akamaihd.net/ugc/619597880747746885/2FE0CB254B3197309774F141485C9716EDBDB876/);
 }
 .card-img {
   height: 600px;
+}
+
+.input-box-style {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #000000;
 }

@@ -64,10 +64,11 @@ export default class Home extends React.Component {
       obj.page = 1;
     }
     console.log(obj.page);
-    if (values.s !== undefined) this.get_api(queryString.stringify(obj));
+    if (obj.s !== undefined) this.get_api(queryString.stringify(obj));
     let name = JSON.parse(localStorage.getItem("name"));
     this.setState({
-      welcomeName: name.name
+      welcomeName: name.name,
+      result: obj
     });
   };
 
@@ -127,7 +128,7 @@ export default class Home extends React.Component {
 
     Search.s = this.state.searchBox;
     Search.page = 1;
-    if (this.state.result.s !== undefined) {
+    if (this.state.result.s !== "") {
       this.get_api(queryString.stringify(Search));
       console.log(Search);
       this.setState(
@@ -216,17 +217,16 @@ export default class Home extends React.Component {
               id="search"
               value={this.state.searchBox}
               onChange={this.handleSearch}
-              className="form-control w-50"
+              className="input-box-style w-50"
               placeholder="Search Movies..."
             />
             <datalist id="data">{optionsList}</datalist>
 
-            <button
-              type="button"
-              onClick={this.search}
-              class=" mt-3 btn btn-primary"
-            >
-              Search
+            <button type="button" onClick={this.search} class=" mt-3 btn">
+              <img
+                src="https://img.icons8.com/ios-filled/50/000000/search.png"
+                alt="search"
+              />
             </button>
           </div>
         </center>
@@ -237,7 +237,6 @@ export default class Home extends React.Component {
               return (
                 <React.Fragment>
                   <div className="card col-lg-4 col-md-6 col-sm-12">
-                    {/* <div className="col-4"> */}
                     <img
                       src={items.Poster}
                       className=" card-img-top card-img"

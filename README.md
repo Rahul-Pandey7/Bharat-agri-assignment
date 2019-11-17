@@ -1,10 +1,35 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## `Overview`
 
-## Available Scripts
+A Simple movie search engine built with [react](https://reactjs.org/) and [OMDBapi](http://www.omdbapi.com/).
 
-In the project directory, you can run:
+## `Functionalities`
 
-### `npm start`
+- Here users need to login first for searching the movie using `username` from [jsonplaceholder](https://jsonplaceholder.typicode.com/).
+
+- After login of `Authenticate User`, User will be redirected to their dashboard where they are able to search for any movie.
+
+- User will get the desired result after giving the valid keyword in the search result.
+
+- User can see a maximum of 10 Datas on one go,then there is `pagination` which manage the rest of the datas.
+
+- User will be able to see their suggestion keywords as per previous search.
+
+- User cans see details of any particular movie after clicking on it.
+
+- The details will be shown on another page..
+
+- User have a valid logout button to get sign off from the `Search Engine`.
+
+## `Built With`
+
+- ReactJS
+- Bootstrap
+- OMDBapi
+- jsonplaceholder API
+
+### `Developmemnt`
+
+1. Clone the repository and change directory
 
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
